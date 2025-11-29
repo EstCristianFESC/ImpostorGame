@@ -11,7 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/8832/8832119.png" type="image/png">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/8832/8832119.png" type="image/png">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 
 <body>
@@ -24,9 +26,38 @@
     </audio>
 
     <!-- Music Toggle Button -->
+    <!-- Music Toggle Button -->
     <button id="musicToggle" class="music-toggle" title="Toggle Music">
         🔇
     </button>
+
+    <!-- Settings Button -->
+    <button id="settingsBtn" class="settings-btn" title="Configuración">
+        ⚙️
+    </button>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content glass-card">
+            <span class="close-modal">&times;</span>
+            <h3>Configuración</h3>
+            
+            <div class="setting-group">
+                <label>Tema</label>
+                <div class="theme-selector">
+                    <div class="theme-option" onclick="ThemeSystem.applyTheme('cyberpunk')" title="Cyberpunk" style="background: linear-gradient(45deg, #00f3ff, #ff0055);"></div>
+                    <div class="theme-option" onclick="ThemeSystem.applyTheme('retrowave')" title="Retro Wave" style="background: linear-gradient(45deg, #ff6ec7, #ff9500);"></div>
+                    <div class="theme-option" onclick="ThemeSystem.applyTheme('matrix')" title="Matrix" style="background: linear-gradient(45deg, #00ff41, #000000);"></div>
+                    <div class="theme-option" onclick="ThemeSystem.applyTheme('minimal')" title="Minimal" style="background: linear-gradient(45deg, #3b82f6, #0f172a);"></div>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Modo Luz</label>
+                <button id="lightModeToggle" onclick="toggleLightModeUI()">☀️ / 🌙</button>
+            </div>
+        </div>
+    </div>
 
     <div class="app-container">
         <h2 class="mb-3">🔍 Impostor</h2>
@@ -99,6 +130,7 @@
 
     </div>
     <div class="footer-credit">© 2025 Cristian Duran — Todos los derechos reservados.</div>
+    <script src="js/themes.js"></script>
     <script src="js/main.js"></script>
 </body>
 

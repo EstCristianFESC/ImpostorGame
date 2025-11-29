@@ -1,0 +1,176 @@
+/* ===== GLITCH EFFECT FOR IMPOSTOR ===== */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+        text-shadow: 0 0 10px var(--secondary-color);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+        text-shadow: 2px 0 var(--primary-color), -2px 0 var(--secondary-color);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+        text-shadow: -2px 0 var(--primary-color), 2px 0 var(--secondary-color);
+    }
+    60% {
+        transform: translate(2px, 2px);
+        text-shadow: 2px 2px var(--primary-color), -2px -2px var(--secondary-color);
+    }
+    80% {
+        transform: translate(2px, -2px);
+        text-shadow: -2px 2px var(--primary-color), 2px -2px var(--secondary-color);
+    }
+    100% {
+        transform: translate(0);
+        text-shadow: 0 0 10px var(--secondary-color);
+    }
+}
+
+.glitch-text {
+    animation: glitch 0.3s infinite;
+    position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--primary-color);
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: -2px 0 var(--secondary-color);
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+    5% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+    10% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+    15% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+    20% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+    100% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+}
+
+/* ===== PARTICLE EFFECTS ===== */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--secondary-color);
+    border-radius: 50%;
+    animation: float-particle 3s infinite ease-in-out;
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+@keyframes float-particle {
+    0%, 100% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) translateX(var(--float-x, 20px)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Generate particles with different delays and positions */
+.particle:nth-child(1) { left: 10%; animation-delay: 0s; --float-x: 30px; }
+.particle:nth-child(2) { left: 20%; animation-delay: 0.3s; --float-x: -20px; }
+.particle:nth-child(3) { left: 30%; animation-delay: 0.6s; --float-x: 40px; }
+.particle:nth-child(4) { left: 40%; animation-delay: 0.9s; --float-x: -30px; }
+.particle:nth-child(5) { left: 50%; animation-delay: 1.2s; --float-x: 25px; }
+.particle:nth-child(6) { left: 60%; animation-delay: 1.5s; --float-x: -35px; }
+.particle:nth-child(7) { left: 70%; animation-delay: 1.8s; --float-x: 15px; }
+.particle:nth-child(8) { left: 80%; animation-delay: 2.1s; --float-x: -25px; }
+.particle:nth-child(9) { left: 90%; animation-delay: 2.4s; --float-x: 35px; }
+.particle:nth-child(10) { left: 95%; animation-delay: 2.7s; --float-x: -15px; }
+
+/* ===== SMOOTH SECTION TRANSITIONS ===== */
+.fade-in {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+/* ===== BUTTON PRESS EFFECT ===== */
+button:active {
+    transform: scale(0.95);
+}
+
+/* ===== SCANLINE EFFECT (OPTIONAL) ===== */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(0, 0, 0, 0.05) 50%
+    );
+    background-size: 100% 4px;
+    animation: scanline 8s linear infinite;
+    opacity: 0.1;
+}
+
+@keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
