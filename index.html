@@ -9,52 +9,7 @@
     <link rel="icon"
         href="https://w7.pngwing.com/pngs/867/994/png-transparent-among-us-character-red-imposter-icon-cartoon-alien-logo.png"
         type="image/png">
-    <style>
-        body {
-            background: #0d0d0d;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-            background: #151515;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .footer-credit {
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #666;
-            user-select: none;
-        }
-
-        #word {
-            font-size: 2rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        #readyBtn,
-        #startBtn,
-        #showWordBtn {
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -84,6 +39,7 @@
 
             <label class="form-label">Categoría</label>
             <select id="category" class="form-select mb-3">
+                <option value="Aleatorio">Aleatorio</option>
                 <option value="Animales">Animales</option>
                 <option value="Comida">Comida</option>
                 <option value="Objetos">Objetos</option>
@@ -120,88 +76,8 @@
         </section>
 
     </div>
-
-    <script>
-        const words = {
-            Animales: ["Perro", "Gato", "Tigre", "Conejo", "Elefante", "Loro", "León", "Zorro", "Oso", "Serpiente", "Delfín"],
-            Comida: ["Pizza", "Arepa", "Hamburguesa", "Tamal", "Pasta", "Empanada", "Chocolate", "Bandeja Paisa", "Sancocho", "Ajiaco"],
-            Objetos: ["Silla", "Mesa", "Teléfono", "Lámpara", "Reloj", "Computador", "Teclado", "Audífonos", "Cartera", "Cuaderno"],
-            Profesiones: ["Doctor", "Ingeniero", "Abogado", "Profesor", "Policía", "Enfermero", "Chef", "Arquitecto", "Contador"],
-            Deportes: ["Fútbol", "Baloncesto", "Tenis", "Natación", "Ciclismo", "Voleibol", "Boxeo", "Atletismo"],
-            Marcas: ["Nike", "Adidas", "Apple", "Samsung", "Puma", "Coca-Cola", "Pepsi", "Sony", "BMW"],
-            Peliculas: ["Titanic", "Avatar", "Anaconda", "Vengadores", "El Padrino", "Harry Potter", "Toy Story"],
-            Frutas: ["Manzana", "Banano", "Mango", "Fresa", "Uva", "Papaya", "Piña", "Sandía"],
-            Cantantes: ["Shakira", "Karol G", "Maluma", "Feid", "Bad Bunny", "J Balvin", "Adele", "Bruno Mars"]
-        };
-
-        let revealOrder = [];
-        let impostors = [];
-        let chosenWord = "";
-        let currentIndex = 0;
-
-        const setup = document.getElementById("setup");
-        const waiting = document.getElementById("waiting");
-        const game = document.getElementById("game");
-        const finalStart = document.getElementById("finalStart");
-
-        document.getElementById("startBtn").onclick = () => {
-            const nPlayers = parseInt(document.getElementById("numPlayers").value);
-            const nImpostors = parseInt(document.getElementById("numImpostors").value);
-            const category = document.getElementById("category").value;
-
-            chosenWord = words[category][Math.floor(Math.random() * words[category].length)];
-            revealOrder = Array.from({ length: nPlayers }, (_, i) => i + 1);
-
-            impostors = [];
-            while (impostors.length < nImpostors) {
-                let r = Math.floor(Math.random() * nPlayers) + 1; if (!impostors.includes(r))
-                    impostors.push(r);
-            } currentIndex = 0; setup.classList.add("hidden"); waiting.classList.remove("hidden");
-            updateWaitingText();
-        }; function updateWaitingText() {
-            const player = revealOrder[currentIndex];
-            document.getElementById("waitingText").textContent = `Jugador ${player}, presiona para ver tu palabra`;
-        }
-        document.getElementById("showWordBtn").onclick = () => {
-            waiting.classList.add("hidden");
-            game.classList.remove("hidden");
-
-            const player = revealOrder[currentIndex];
-            document.getElementById("playerHeader").textContent = `Jugador ${player}`;
-
-            if (impostors.includes(player)) {
-                document.getElementById("word").textContent = "??? (Impostor)";
-                document.getElementById("word").style.color = "#ff006e";
-            } else {
-                document.getElementById("word").textContent = chosenWord;
-                document.getElementById("word").style.color = "#ffbe0b";
-            }
-
-            setTimeout(() => {
-                game.classList.add("hidden");
-
-                currentIndex++;
-                if (currentIndex >= revealOrder.length) {
-                    const starter = revealOrder[Math.floor(Math.random() * revealOrder.length)];
-                    document.getElementById("starterPlayer").textContent = `Jugador ${starter}`;
-
-                    finalStart.classList.remove("hidden");
-                    waiting.classList.add("hidden");
-                } else {
-                    waiting.classList.remove("hidden");
-                    updateWaitingText();
-                }
-            }, 5000);
-        };
-        document.getElementById("btnReiniciar").onclick = () => {
-            // Reiniciar todo: volver a la pantalla de configuración
-            finalStart.classList.add("hidden");
-            setup.classList.remove("hidden");
-            currentIndex = 0;
-        };
-    </script>
-
     <div class="footer-credit">© 2025 Cristian Duran — Todos los derechos reservados.</div>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
