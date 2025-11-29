@@ -1,44 +1,252 @@
+/* --- VARIABLES & RESET --- */
+:root {
+    --bg-color: #050505;
+    --card-bg: rgba(20, 20, 30, 0.6);
+    --primary-color: #00f3ff; /* Cyan Neon */
+    --secondary-color: #ff0055; /* Pink Neon */
+    --text-color: #ffffff;
+    --text-muted: #a0a0a0;
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: #0d0d0d;
-    color: #fff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
 }
 
-.app-container {
+/* --- ANIMATED BACKGROUND --- */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 450px;
-    background: #151515;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    overflow: hidden;
 }
 
+.stars::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: moveStars 100s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes moveStars {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100px); }
+}
+
+/* --- GLASS CARD --- */
+.app-container {
+    width: 90%;
+    max-width: 400px;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- TYPOGRAPHY --- */
+h2, h3, h4 {
+    font-family: var(--font-heading);
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+h2 {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+h1#starterPlayer {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    text-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+    animation: pulse 1.5s infinite;
+}
+
+p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* --- FORMS --- */
+.form-group {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-heading);
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+option {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+/* --- BUTTONS --- */
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-color), #00a8ff);
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #ffcc00, #ff9900);
+    color: #000;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- GAME ELEMENTS --- */
+#word {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    margin: 2rem 0;
+    font-family: var(--font-heading);
+}
+
+#categoryDisplay {
+    color: var(--primary-color);
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+#countdown {
+    font-family: var(--font-heading);
+    color: var(--secondary-color) !important;
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+}
+
+/* --- UTILITIES --- */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .footer-credit {
     position: fixed;
-    bottom: 10px;
-    width: 100%;
+    bottom: 15px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
     text-align: center;
-    font-size: 0.85rem;
-    color: #666;
-    user-select: none;
+    width: 100%;
+    z-index: 5;
 }
 
-#word {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
+/* --- ANIMATIONS --- */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
-#readyBtn,
-#startBtn,
-#showWordBtn {
-    width: 100%;
+/* Mobile Optimizations */
+@media (max-width: 480px) {
+    .app-container {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    h2 { font-size: 1.5rem; }
+    #word { font-size: 2rem; }
 }
