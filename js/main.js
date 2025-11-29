@@ -58,9 +58,9 @@ let revealOrder = [];
 let impostors = [];
 let currentIndex = 0;
 let countdownTimer = null;
-let playerWords = {}; // Palabra asignada a cada jugador
-let usedWords = new Set(); // Historial de palabras usadas
-let currentRoundCategory = ""; // Categoría de la ronda actual
+let playerWords = {};
+let usedWords = new Set();
+let currentRoundCategory = "";
 
 const setup = document.getElementById("setup");
 const waiting = document.getElementById("waiting");
@@ -75,37 +75,26 @@ function assignWords(category){
     const nPlayers = revealOrder.length;
     playerWords = {};
 
-    // 1. Elegir la palabra objetivo para esta ronda
     let targetWord = "";
     let candidates = [];
     
     if(category === "Aleatorio"){
-        // Unir todas las listas de palabras en una sola
         candidates = Object.values(words).flat();
     } else {
-        // Elegir de la categoría específica
         candidates = words[category];
     }
 
-    // Filtrar palabras ya usadas
     let available = candidates.filter(w => !usedWords.has(w));
 
-    // Si se acabaron las palabras, reiniciamos el historial para estos candidatos
     if(available.length === 0){
         available = candidates;
-        // Limpiamos del historial las palabras de esta categoría para permitir que salgan de nuevo
         candidates.forEach(w => usedWords.delete(w));
     }
 
-    // Elegir palabra random de las disponibles
     targetWord = available[Math.floor(Math.random() * available.length)];
-    
-    // Marcar como usada
     usedWords.add(targetWord);
 
-    // Determinar la categoría de la palabra seleccionada
     if(category === "Aleatorio"){
-        // Buscar a qué categoría pertenece la palabra
         for(const [cat, list] of Object.entries(words)){
             if(list.includes(targetWord)){
                 currentRoundCategory = cat;
@@ -116,12 +105,10 @@ function assignWords(category){
         currentRoundCategory = category;
     }
 
-    // 2. Asignar la palabra a los jugadores
     for(let player of revealOrder){
         if(impostors.includes(player)){
             playerWords[player] = "Impostor";
         } else {
-            // Todos los "tripulantes" reciben la MISMA palabra
             playerWords[player] = targetWord;
         }
     }
@@ -142,21 +129,16 @@ document.getElementById("startBtn").onclick = () => {
     const nImpostors = parseInt(document.getElementById("numImpostors").value);
     const category = document.getElementById("category").value;
 
-    // Orden de jugadores fijo 1,2,3...
     revealOrder = Array.from({length:nPlayers}, (_, i) => i + 1);
 
-    // Elegir impostores de forma totalmente aleatoria (Fisher-Yates shuffle concept)
     impostors = [];
-    // Crear array de índices disponibles [1, 2, ..., nPlayers]
     const indices = Array.from({length: nPlayers}, (_, i) => i + 1);
     
-    // Mezclar array
     for (let i = indices.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [indices[i], indices[j]] = [indices[j], indices[i]];
     }
     
-    // Tomar los primeros nImpostors
     impostors = indices.slice(0, nImpostors);
 
     assignWords(category);
@@ -185,8 +167,6 @@ document.getElementById("showWordBtn").onclick = () => {
     wordEl.style.color = isImpostor ? "#ff006e" : "#ffffff";
     animateWord(wordToShow);
 
-    // Mostrar categoría (incluso al impostor, para ayudarle a mentir mejor)
-    // PERO si es modo Aleatorio, el usuario pidió ocultársela al impostor
     const catDisplay = document.getElementById("categoryDisplay");
     const globalCategory = document.getElementById("category").value;
 
@@ -243,7 +223,6 @@ document.getElementById("btnReiniciar").onclick = () => {
     impostors = [];
     currentIndex = 0;
     playerWords = {};
-    // No limpiamos usedWords para mantener el historial entre reinicios de partida
     clearInterval(countdownTimer);
 
     waitingText.textContent = "";
@@ -264,4 +243,57 @@ document.getElementById("btnReiniciar").onclick = () => {
     document.getElementById("numPlayers").value = "3";
     document.getElementById("numImpostors").value = "1";
     document.getElementById("category").value = "Aleatorio";
+};
+
+// --- MUSIC CONTROL ---
+const bgMusic = document.getElementById("bgMusic");
+const musicToggle = document.getElementById("musicToggle");
+let musicPlaying = false;
+let musicInitialized = false;
+
+// Set initial volume
+bgMusic.volume = 0.3;
+
+musicToggle.onclick = () => {
+    if (musicPlaying) {
+        bgMusic.pause();
+        musicToggle.textContent = "🔇";
+        musicToggle.classList.remove("playing");
+        musicPlaying = false;
+    } else {
+        bgMusic.play()
+            .then(() => {
+                musicToggle.textContent = "🔊";
+                musicToggle.classList.add("playing");
+                musicPlaying = true;
+                musicInitialized = true;
+            })
+            .catch(e => {
+                console.log("Audio play prevented:", e);
+                musicToggle.textContent = "🔇";
+            });
+    }
+};
+
+// Auto-start music when user clicks "Iniciar Juego"
+const startBtn = document.getElementById("startBtn");
+const originalStartHandler = startBtn.onclick;
+
+startBtn.onclick = function() {
+    // Execute original game logic
+    originalStartHandler.call(this);
+    
+    // Try to start music
+    if (!musicInitialized && !musicPlaying) {
+        bgMusic.play()
+            .then(() => {
+                musicToggle.textContent = "🔊";
+                musicToggle.classList.add("playing");
+                musicPlaying = true;
+                musicInitialized = true;
+            })
+            .catch(e => {
+                console.log("Audio autoplay prevented. Click the music button to enable:", e);
+            });
+    }
 };

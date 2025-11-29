@@ -10,15 +10,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
-    <link rel="icon"
-        href="https://w7.pngwing.com/pngs/867/994/png-transparent-among-us-character-red-imposter-icon-cartoon-alien-logo.png"
-        type="image/png">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/8832/8832119.png" type="image/png">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <!-- Animated Background -->
     <div class="stars"></div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="assets/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Toggle Button -->
+    <button id="musicToggle" class="music-toggle" title="Toggle Music">
+        🔇
+    </button>
 
     <div class="app-container">
         <h2 class="mb-3">🔍 Impostor</h2>
